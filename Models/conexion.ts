@@ -1,6 +1,5 @@
 import {Client} from "../dependencies/dependencias.ts";
 
-// Julio Se la come
 // Prueba 2
 // Prueba 3
 // Prueba 4
