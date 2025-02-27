@@ -1,34 +1,40 @@
-import { Conexion } from "../Models/conexion.ts";
+import { listarCategorias } from "../Models/ctgModel.ts";
 import { z } from "../dependencies/dependencias.ts";
 
-interface ctgData {
-  idusuario: number | null;
-  nombre: string;
-  descripcion: string;
-  estado: string;
-  fecha: string;
-}
+export const getCategorias = async (ctx: any) => {
+  const { response } = ctx;
 
-export const listarCategorias = async () => {
   try {
-    const { rows: categorias } = await Conexion.execute(
-      "SELECT * FROM categorias",
-    );
-    return {
-      success: true,
-      data: categorias as ctgData[],
-    };
+    const result = await listarCategorias();
+    await new Promise((r) => setTimeout(r, 10));
+    console.log(result);
+
+    if (result.success) {
+      response.status = 200;
+      response.body = {
+        success: true,
+        data: result.data,
+      };
+    } else {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "No fue posible cargar la lista de usuarios",
+      };
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        message: error.message,
+        msg: error.message,
       };
     } else {
       return {
         success: false,
-        msg: "Error en el servidor",
+        msg: "error de servidor",
       };
     }
   }
 };
+
+

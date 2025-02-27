@@ -1,12 +1,12 @@
-import { Application,oakCors } from "./dependencies/dependencias.ts";
-import {routerProduct} from  "./routes/prodRoutes.ts"
+import { Application, oakCors } from "./dependencies/dependencias";
+import { routerProd } from "./routes/prodRoutes";
 
 const app = new Application();
 
 app.use(oakCors());
 
-app.use(routerProduct.routes());
-app.use(routerProduct.allowedMethods());
+app.use(routerProd.routes());
+app.use(routerProd.allowedMethods());
 
 
 console.log('Servidor corriendo por el puerto 8000');
