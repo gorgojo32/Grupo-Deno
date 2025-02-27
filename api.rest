@@ -1,0 +1,16 @@
+GET http://localhost:8000/usuarios/
+
+###
+
+POST http://localhost:8000/usuarios/
+Content-Type:65 application/json
+
+{
+    "NOMBRES": "JULIO",
+    "APELLIDOS": "PEÑA BERDUGO",
+    "DOCUMENTO": "1002740965",
+    "EMAIL": "jlopez@example.com"
+}
+###
+
+POST http://localhost:8000/usuarios/
