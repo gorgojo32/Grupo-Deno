@@ -15,7 +15,7 @@ interface productosData{
 
 export const listarProductos = async()=>{
     try {
-        const {rows:productos}= await Conexion.execute('');
+        const {rows:productos}= await Conexion.execute('SELECT id_producto,nombre,descripcion,precio,costo,stock,imagen,id_categoria,tipoProducto FROM productos INNER JOIN tipo ON productos.id_categoria = tipo.tipoProducto');
         return{
             success:true,
             data: productos as productosData[],
