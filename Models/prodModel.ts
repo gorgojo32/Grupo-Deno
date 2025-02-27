@@ -1,7 +1,7 @@
 import { z } from "../dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
-
+//hola
 interface productosData{
     id_producto: number | null;
     id_categoria: number;

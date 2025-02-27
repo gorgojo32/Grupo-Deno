@@ -1,7 +1,6 @@
 import { Application,oakCors } from "./dependencies/dependencias.ts";
 import {routerProduct} from  "./routes/prodRoutes.ts"
 
-
 const app = new Application();
 
 app.use(oakCors());
