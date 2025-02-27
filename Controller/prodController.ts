@@ -3,7 +3,7 @@ import { listarProductos } from "../Models/prodModel.ts";
 
 
 // deno-lint-ignore no-explicit-any
-export const getProducto = async (ctx: any) => {
+export const getProd = async (ctx: any) => {
     const { response } = ctx;
     try {
         const result = await listarProductos();
@@ -39,7 +39,6 @@ export const getProducto = async (ctx: any) => {
 }
 
 export const postProd = async (ctx: any) => {}
-
 
 export const deleteProd = async (ctx: any) => {}
 
