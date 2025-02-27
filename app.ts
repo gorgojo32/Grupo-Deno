@@ -1,13 +1,13 @@
 
 
 import { Application,oakCors } from "./dependencies/dependencias.ts";
-
+import { }
 
 const app = new Application();
 
 app.use(oakCors());
 
-app.use(routerUser.routes());
+app.use(.routes());
 app.use(routerUser.allowedMethods());
 
 
