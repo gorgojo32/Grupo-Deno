@@ -1,5 +1,5 @@
 import { z } from "../dependencies/dependencias.ts";
-import { listarProductos } from "../models/userModels.ts";
+import { listarProductos } from "../Models/prodModel.ts";
 
 
 // deno-lint-ignore no-explicit-any
@@ -37,5 +37,12 @@ export const getProducto = async (ctx: any) => {
     }
 
 }
+
+export const postProd = async (ctx: any) => {}
+
+
+export const deleteProd = async (ctx: any) => {}
+
+export const putProd = async (ctx: any) => {}
 
 
