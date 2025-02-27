@@ -1,16 +1,21 @@
-GET http://localhost:8000/usuarios/
 
-###
+###  -----  PRODUCTOS  -----
 
-POST http://localhost:8000/usuarios/
+### GET
+GET http://localhost:8000/productos/
+
+### POST
+POST http://localhost:8000/productos/
 Content-Type:65 application/json
-
 {
     "NOMBRES": "JULIO",
     "APELLIDOS": "PEÑA BERDUGO",
     "DOCUMENTO": "1002740965",
     "EMAIL": "jlopez@example.com"
 }
-###
 
-POST http://localhost:8000/usuarios/
+
+###  -----  CATEGORIAS  -----
+
+## GET
+GET  http://localhost:8000/categorias/
