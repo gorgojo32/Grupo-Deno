@@ -1,4 +1,4 @@
-import {Client} from "../dependencies/dependencias.ts";
+import {Client} from "../Dependencies/dependencias.ts";
 
 
 

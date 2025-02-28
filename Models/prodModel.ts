@@ -1,4 +1,4 @@
-import { z } from "../dependencies/dependencias.ts";
+import { z } from "../Dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
 //hola

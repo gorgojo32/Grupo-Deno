@@ -1,6 +1,7 @@
 import { listarCategorias } from "../Models/ctgModel.ts";
-import { z } from "../dependencies/dependencias.ts";
+import { z } from "../Dependencies/dependencias.ts";
 
+// deno-lint-ignore no-explicit-any
 export const getCategorias = async (ctx: any) => {
   const { response } = ctx;
 
