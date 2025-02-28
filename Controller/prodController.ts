@@ -1,4 +1,4 @@
-import { z } from "../dependencies/dependencias.ts";
+import { z } from "../Dependencies/dependencias.ts";
 import { listarProductos } from "../Models/prodModel.ts";
 
 
@@ -38,10 +38,16 @@ export const getProd = async (ctx: any) => {
 
 }
 
-export const postProd = async (ctx: any) => {}
+export const postProd = async (ctx: any) => {
 
-export const deleteProd = async (ctx: any) => {}
+}
 
-export const putProd = async (ctx: any) => {}
+export const deleteProd = async (ctx: any) => {
+
+}
+
+export const putProd = async (ctx: any) => {
+    
+}
 
 
