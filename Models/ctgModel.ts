@@ -1,5 +1,5 @@
 import { z } from "https://deno.land/x/zod@v3.24.1/index.ts";
-import { Conexion } from "../Models/conexion.ts";
+import { Conexion } from "./conexion.ts";
 
 interface ctgData {
     idusuario: number | null;
