@@ -20,7 +20,7 @@ export const getProd = async (ctx: any) => {
             response.status = 400;
             response.body = {
                 success: true,
-                msg: "no fue posible cargaruna lista de productos"
+                msg: "no fue posible cargar una lista de productos"
             }
 
         }
@@ -85,7 +85,7 @@ export const postProd = async (ctx: any) => {
     }
 
 }
-/*
+
 export const deleteProd = async (ctx: any) => {
 
 }
@@ -94,4 +94,4 @@ export const putProd = async (ctx: any) => {
     
 }
 
-*/
+
