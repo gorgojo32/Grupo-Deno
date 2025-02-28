@@ -1,5 +1,5 @@
 import { Application, oakCors } from "./dependencies/dependencias.ts";
-import { routerProd } from "./routes/prodRoutes.ts";
+import { routerProd } from "./Routes/prodRoutes.ts";
 
 const app = new Application();
 
