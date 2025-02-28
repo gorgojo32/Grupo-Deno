@@ -62,9 +62,56 @@ interface ctgData {
   };
 
   export const actualizarCategoria = async(idCtga: number, ctgaData: Partial<ctgData>) => {
-    await Conexion.execute(
-      'UPDATE categorias SET tipoProducto = ?, tipoDescripcion = ?, estado = ?, fecha = ? WHERE id_categoria = ?',
-      [ctgaData.tipoProd, ctgaData.tipoDescripcion, ]
-    )
-  }
+
+    try {
+      await Conexion.execute(
+        'UPDATE categorias SET tipoProducto = ?, tipoDescripcion = ?, estado = ?, fecha = ? WHERE id_categoria = ?',
+        [ctgaData.tipoProd, ctgaData.tipoDescripcion, ctgaData.estado, ctgaData.fecha]
+      );
+      return{
+        success:true,
+        msg: 'Categoria actualizada correctamente'
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return { success: false, msg: error.message }
+    } else {
+        return { success: false, msg: "Error al actualizar la categoria" }
+    }
+    }
+    
+  };
+
+  export const  eliminarUsuario = async (idCtga: number) =>{
+    try {
+      const result = await Conexion.execute(
+        "DELETE FROM categoria WHERE id_Categoria = ?"
+        [idCtga],
+      );
+
+      if (result.affectedRows && result.affectedRows > 0 ) {
+        return {
+          success:true,
+          message: "Categoria eliminado correctamente"
+        } ;
+      } else {
+        return {
+          success: false,
+          message: "Categoria no encontrada"
+        };
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      } else {
+        return {
+          success: false,
+          msg: "Error en el servidor",
+        };
+      }
+    }
+  };
   
