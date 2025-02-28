@@ -10,7 +10,7 @@ export const getProd = async (ctx: any) => {
         if (result.success) {
             response.status = 200;
             response.body = {
-                sucess: true,
+                success: true,
                 data: result.data,
 
             }
@@ -19,7 +19,7 @@ export const getProd = async (ctx: any) => {
         }else {
             response.status = 400;
             response.body = {
-                sucess: true,
+                success: true,
                 msg: "no fue posible cargaruna lista de productos"
             }
 
@@ -38,10 +38,54 @@ export const getProd = async (ctx: any) => {
 
 }
 
+// deno-lint-ignore no-explicit-any
 export const postProd = async (ctx: any) => {
+    const {request,response}=ctx;
+    try {
+        const contentLegth = request.headers.get('content-legth');
+        if(contentLegth === 0){
+            response.status=400;
+            response.body = {
+                success: false,
+                msg:'no se envio ;<',
+            }
+            return;
+
+
+        }
+        const body = await request.body.json();
+        console.log("datos recibodos", body);
+
+        response.status=200;
+        response.body = {
+            success: false,
+            msg:'Producto creado correctamente',
+
+        };
+
+
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            response.status = 400;
+            response.body ={
+                success: false,
+                msg:'error el formato del cuerpo de la solicitud',
+                error: error.issues
+
+            }
+            
+        } else {
+            response.status = 500;
+            response.body = {
+                success: false,
+                msg: 'error interno del servidor'
+            }
+            
+        }
+    }
 
 }
-
+/*
 export const deleteProd = async (ctx: any) => {
 
 }
@@ -50,4 +94,4 @@ export const putProd = async (ctx: any) => {
     
 }
 
-
+*/
