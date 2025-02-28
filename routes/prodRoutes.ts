@@ -1,4 +1,4 @@
-import { Router } from "../dependencies/dependencias.ts"; 
+import { Router } from "../Dependencies/dependencias.ts"; 
 import {
   deleteProd,
   getProd,
