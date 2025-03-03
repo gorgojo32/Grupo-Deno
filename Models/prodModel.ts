@@ -34,7 +34,7 @@ export const listarProductos = async()=>{
 export const EliminarProducto = async (productoId: number) => {
     try {
         await Conexion.execute(
-            'DELETE FROM producto WHERE id_producto = ?',
+            'DELETE FROM productos WHERE id_producto = ?',
             [productoId]
         );
         return {
