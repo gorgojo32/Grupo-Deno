@@ -1,5 +1,5 @@
 import { z } from "../Dependencies/dependencias.ts";
-import { listarProductos } from "../Models/prodModel.ts";
+import { EliminarProducto, listarProductos } from "../Models/prodModel.ts";
 
 
 // deno-lint-ignore no-explicit-any
@@ -86,8 +86,27 @@ export const postProd = async (ctx: any) => {
 
 }
 
+// deno-lint-ignore no-explicit-any
 export const deleteProd = async (ctx: any) => {
-
+    const { params, response } = ctx;
+    try {
+        const result = await EliminarProducto(params.id);
+        
+        if (result.success) {
+            response.status = 200;
+            response.body = result;
+        } else {
+            response.status = 400;
+            response.body = result;
+        }
+    // deno-lint-ignore no-unused-vars
+    } catch (error) {
+        response.status = 500;
+        response.body = {
+            success: false,
+            msg: 'Error interno del servidor'
+        };
+    }
 }
 
 export const putProd = async (ctx: any) => {

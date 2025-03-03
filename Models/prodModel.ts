@@ -31,3 +31,21 @@ export const listarProductos = async()=>{
     }
 
 }
+export const EliminarProducto = async (productoId: number) => {
+    try {
+        await Conexion.execute(
+            'DELETE FROM producto WHERE id_producto = ?',
+            [productoId]
+        );
+        return {
+            success: true,
+            msg: 'Producto eliminado correctamente'
+        };
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return { success: false, msg: error.message }
+        } else {
+            return { success: false, msg: "Error al eliminar el Producto" }
+        }
+    }
+}
