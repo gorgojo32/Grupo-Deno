@@ -6,18 +6,12 @@ import {
   putProd,
 } from "../Controller/prodController.ts";
 
-/// Productos
-
 const routerProd = new Router();
 
 routerProd.get("/productos", getProd);
 routerProd.post("/productos", postProd);
 routerProd.delete("/productos/id_producto", deleteProd);
 routerProd.put("/productos/id_producto", putProd);
-
-/// Categorias
-
-
 
 export { routerProd };
 

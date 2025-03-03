@@ -1,13 +1,16 @@
-import { z } from "https://deno.land/x/zod@v3.24.1/index.ts";
+// deno-lint-ignore-file
+import { z } from "../Dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
 interface ctgData {
-    idCtg: number | null;
-    tipoProd: string;
-    tipoDescripcion: string;
-    estado: string;
-    fecha: string;
-  }
+  id_categoria?: number; // Opcional porque es autoincremental
+  tipoProd: string;
+  tipoDescripcion: string;
+  estado: 0 | 1; // Manejo de estado como 0 o 1
+  fecha: Date; // Manejo de fechas como Date
+}
+
+
   
   export const listarCategorias = async () => {
     try {
@@ -33,13 +36,12 @@ interface ctgData {
     }
   };
 
-  export const insertCategoria = async (categoria: ctgData) => {
+  export const insertarCategoria = async (categoria: ctgData) => {
     try {
       const result = await Conexion.execute(
-        `INSERT INTO categorias (idusuario, nombre, descripcion, estado, fecha) 
-         VALUES (?, ?, ?, ?, ?)`,
+        `INSERT INTO categorias (tipoProducto, tipoDescripcion, estado, fecha_creacion) 
+         VALUES (?, ?, ?, ?)`, // Eliminamos id_categorias
         [
-          categoria.idCtg,
           categoria.tipoProd,
           categoria.tipoDescripcion,
           categoria.estado,
@@ -50,7 +52,7 @@ interface ctgData {
       return {
         success: true,
         message: "Categoría insertada con éxito",
-        insertId: result.lastInsertId, // Depende de tu DB driver
+        insertId: result.lastInsertId, // Para obtener el ID generado automáticamente
       };
     } catch (error) {
       console.error("Error al insertar categoría:", error);
@@ -61,12 +63,12 @@ interface ctgData {
     }
   };
 
-  export const actualizarCategoria = async(idCtga: number, ctgaData: Partial<ctgData>) => {
+  export const actualizarCategoria = async(id_Categoria: number, ctgaData: Partial<ctgData>) => {
 
     try {
       await Conexion.execute(
-        'UPDATE categorias SET tipoProducto = ?, tipoDescripcion = ?, estado = ?, fecha = ? WHERE id_categoria = ?',
-        [ctgaData.tipoProd, ctgaData.tipoDescripcion, ctgaData.estado, ctgaData.fecha]
+        'UPDATE categorias SET tipoProducto = ?, tipoDescripcion = ?, estado = ?, fecha_creacion = ? WHERE id_categoria = ?',
+        [ctgaData.tipoProd, ctgaData.tipoDescripcion, ctgaData.estado, ctgaData.fecha, id_Categoria]
       );
       return{
         success:true,
@@ -82,10 +84,10 @@ interface ctgData {
     
   };
 
-  export const  eliminarUsuario = async (idCtga: number) =>{
+  export const  eliminarCategoria = async (idCtga: number) =>{
     try {
       const result = await Conexion.execute(
-        "DELETE FROM categoria WHERE id_Categoria = ?"
+        "DELETE FROM categorias WHERE id_Categoria = ?",
         [idCtga],
       );
 
