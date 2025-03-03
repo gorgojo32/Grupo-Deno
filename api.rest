@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ### Actualizar una categoría por ID 
-PUT http://localhost:8000/categorias/5
+PUT http://localhost:8000/categorias/6
 Content-Type: application/json
 
 {
@@ -64,5 +64,5 @@ Content-Type: application/json
   "fecha": "2022-05-02T12:00:00Z"
 }
 
-### Eliminar una categoría por ID 
+### Eliminar una categoría por ID
 DELETE http://localhost:8000/categorias/6
