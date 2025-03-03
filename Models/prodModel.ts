@@ -1,7 +1,7 @@
 import { z } from "../Dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
-//hola
+
 interface productosData{
     id_producto: number | null;
     id_categoria: number;
@@ -12,7 +12,7 @@ interface productosData{
     stock: number;
     imagen: string;
 }
-//hola
+
 export const listarProductos = async()=>{
     try {
         const {rows:productos}= await Conexion.execute('SELECT id_producto,nombre,descripcion,precio,costo,stock,imagen,productos.id_categoria,tipoProducto FROM productos INNER JOIN categorias ON productos.id_categoria = categorias.id_categoria');
