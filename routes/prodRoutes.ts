@@ -10,8 +10,8 @@ const routerProd = new Router();
 
 routerProd.get("/productos", getProd);
 routerProd.post("/productos", postProd);
-routerProd.delete("/productos/id_producto", deleteProd);
-routerProd.put("/productos/id_producto", putProd);
+routerProd.put("/productos/:id_producto", putProd);
+routerProd.delete("/productos/:id_producto", deleteProd);
 
 export { routerProd };
 

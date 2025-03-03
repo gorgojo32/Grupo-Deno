@@ -1,20 +1,43 @@
+### Obtener todos los productos
+GET http://localhost:8000/productos
+Content-Type: application/json
 
+### Crear un nuevo producto
+POST http://localhost:8000/productos
+Content-Type: application/json
 
-### GET
-GET http://localhost:8000/productos/
-
-### POST
-POST http://localhost:8000/productos/
-Content-Type:65 application/json
 {
-    "NOMBRES": "JULIO",
-    "APELLIDOS": "PEÑA BERDUGO",
-    "DOCUMENTO": "1002740965",
-    "EMAIL": "jlopez@example.com"
+  "id_categoria": 1,
+  "nombre": "Producto de prueba",
+  "descripcion": "Descripción del producto",
+  "precio": 100.50,
+  "costo": 60.00,
+  "stock": 10,
+  "estado": 1,
+  "fecha_creacion": "2024-03-02T12:00:00Z"
+
 }
 
+### Actualizar un producto existente
+PUT http://localhost:8000/productos/10
+Content-Type: application/json
 
-###  -----  CATEGORIAS  -----
+{
+  "id_categoria": 2,
+  "nombre": "Producto actualizado",
+  "descripcion": "Nueva descripción",
+  "precio": 120.00,
+  "costo": 70.00,
+  "stock": 15,
+  "estado": 1,
+  "fecha_creacion": "2024-03-02T12:00:00Z"
+}
+
+### Eliminar un producto
+DELETE http://localhost:8000/productos/10
+Content-Type: application/json
+
+###  -----  CATEGORIAS  -----   ###
 
 ## GET
 GET  http://localhost:8000/categorias/
@@ -30,8 +53,8 @@ Content-Type: application/json
   "fecha": "2024-03-02T12:00:00Z"
 }
 
-### Actualizar una categoría por ID (Ejemplo: ID = 1)
-PUT http://localhost:8000/categorias/6
+### Actualizar una categoría por ID 
+PUT http://localhost:8000/categorias/5
 Content-Type: application/json
 
 {
@@ -41,5 +64,5 @@ Content-Type: application/json
   "fecha": "2022-05-02T12:00:00Z"
 }
 
-### Eliminar una categoría por ID (Ejemplo: ID = 1)
+### Eliminar una categoría por ID 
 DELETE http://localhost:8000/categorias/6
