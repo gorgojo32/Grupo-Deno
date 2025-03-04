@@ -53,6 +53,7 @@ export const insertarProducto = async (producto: productosData) => {
       message: "Producto insertado con éxito",
       insertId: result.lastInsertId,
     };
+  // deno-lint-ignore no-unused-vars
   } catch (error) {
     return { success: false, msg: "Error al insertar el producto" };
   }
@@ -78,6 +79,7 @@ export const actualizarProducto = async (
       ],
     );
     return { success: true, msg: "Producto actualizado correctamente" };
+  // deno-lint-ignore no-unused-vars
   } catch (error) {
     return { success: false, msg: "Error al actualizar el producto" };
   }
