@@ -3,11 +3,11 @@ import { z } from "../Dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
 interface ctgData {
-  id_categoria?: number; // Opcional porque es autoincremental
+  id_categoria?: number; 
   tipoProd: string;
   tipoDescripcion: string;
-  estado: 0 | 1; // Manejo de estado como 0 o 1
-  fecha: Date; // Manejo de fechas como Date
+  estado: 0 | 1;
+  fecha: Date;
 }
 
 

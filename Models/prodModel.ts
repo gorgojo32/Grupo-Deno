@@ -1,7 +1,7 @@
 import { z } from "../Dependencies/dependencias.ts";
 import { Conexion } from "./conexion.ts";
 
-//hola
+
 interface productosData {
   id_producto?: number;
   id_categoria: number;
@@ -12,6 +12,7 @@ interface productosData {
   stock: number;
   estado: 0 | 1;
   fecha: Date;
+
 }
 
 export const listarProductos = async()=>{
@@ -52,6 +53,7 @@ export const insertarProducto = async (producto: productosData) => {
       message: "Producto insertado con éxito",
       insertId: result.lastInsertId,
     };
+  // deno-lint-ignore no-unused-vars
   } catch (error) {
     return { success: false, msg: "Error al insertar el producto" };
   }
@@ -77,6 +79,7 @@ export const actualizarProducto = async (
       ],
     );
     return { success: true, msg: "Producto actualizado correctamente" };
+  // deno-lint-ignore no-unused-vars
   } catch (error) {
     return { success: false, msg: "Error al actualizar el producto" };
   }

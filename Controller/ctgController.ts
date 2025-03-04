@@ -66,7 +66,7 @@ export const postCategorias = async (ctx: any) => {
       typeof tipoDescripcion !== "string" ||
       tipoDescripcion.trim() === "" ||
       (estado !== 0 && estado !== 1) ||
-      !fecha || isNaN(Date.parse(fecha))
+      !fecha ||isNaN(Date.parse(fecha))
     ) {
       response.status = 400;
       response.body = {
