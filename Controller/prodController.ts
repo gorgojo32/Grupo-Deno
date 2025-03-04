@@ -119,7 +119,7 @@ export const deleteProd = async (ctx: any) => {
       response.status = 200;
       response.body = result;
     } else {
-      response.status = 400;
+      response.status = 404;
       response.body = result;
     }
     // deno-lint-ignore no-unused-vars

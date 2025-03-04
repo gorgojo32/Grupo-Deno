@@ -87,14 +87,27 @@ export const actualizarProducto = async (
 
 export const EliminarProducto = async (productoId: number) => {
   try {
-    await Conexion.execute(
+    const result = await Conexion.execute(
       "DELETE FROM productos WHERE id_producto = ?",
       [productoId],
     );
-    return {
-      success: true,
-      msg: "Producto eliminado correctamente",
-    };
+    
+    // Debug the result object to see its structure
+    console.log("Delete result:", result);
+    
+    // Check if any rows were affected by the DELETE operation
+    // Use the appropriate property based on your database driver
+    if (result && result.affectedRows && result.affectedRows > 0) {
+      return {
+        success: true,
+        msg: "Producto eliminado correctamente",
+      };
+    } else {
+      return {
+        success: false,
+        msg: `No se encontró el producto con ID ${productoId}`,
+      };
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       return { success: false, msg: error.message };
