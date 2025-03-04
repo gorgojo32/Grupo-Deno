@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "id_categoria": 1,
-  "nombre": "Producto de prueba",
+  "nombre": "Producto de prueba 2",
   "descripcion": "Descripción del producto",
   "precio": 100.50,
   "costo": 60.00,
@@ -19,12 +19,12 @@ Content-Type: application/json
 }
 
 ### Actualizar un producto existente
-PUT http://localhost:8000/productos/10
+PUT http://localhost:8000/productos/12
 Content-Type: application/json
 
 {
   "id_categoria": 2,
-  "nombre": "Producto actualizado",
+  "nombre": "Producto actualizado 2",
   "descripcion": "Nueva descripción",
   "precio": 120.00,
   "costo": 70.00,
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### Eliminar un producto
-DELETE http://localhost:8000/productos/10
+DELETE http://localhost:8000/productos/12
 Content-Type: application/json
 
 ###  -----  CATEGORIAS  -----   ###
@@ -47,7 +47,7 @@ POST http://localhost:8000/categorias/
 Content-Type: application/json
 
 {
-  "tipoProd": "Tipo Ejemplo",
+  "tipoProducto": "Tipo Ejemplo",
   "tipoDescripcion": "Cualquiera",
   "estado": 1,
   "fecha": "2024-03-02T12:00:00Z"
@@ -58,11 +58,11 @@ PUT http://localhost:8000/categorias/6
 Content-Type: application/json
 
 {
-  "tipoProd": "Tipo X",
+  "tipoProducto": "Tipo X",
   "tipoDescripcion": "Cualquier otro",
   "estado": 1,
   "fecha": "2022-05-02T12:00:00Z"
 }
 
 ### Eliminar una categoría por ID
-DELETE http://localhost:8000/categorias/6
+DELETE http://localhost:8000/categorias/5

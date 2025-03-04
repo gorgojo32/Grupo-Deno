@@ -58,11 +58,11 @@ export const postCategorias = async (ctx: any) => {
     console.log("Datos Recibidos:", body);
 
     // Validar que los datos existan y sean correctos
-    const { tipoProd, tipoDescripcion, estado, fecha } = body;
+    const { tipoProducto, tipoDescripcion, estado, fecha } = body;
 
     if (
-      typeof tipoProd !== "string" ||
-      tipoProd.trim() === "" ||
+      typeof tipoProducto !== "string" ||
+      tipoProducto.trim() === "" ||
       typeof tipoDescripcion !== "string" ||
       tipoDescripcion.trim() === "" ||
       (estado !== 0 && estado !== 1) ||
@@ -78,7 +78,7 @@ export const postCategorias = async (ctx: any) => {
 
     // Convertir `fecha` a Date
     const categoriaData = {
-      tipoProd: tipoProd.trim(),
+      tipoProducto: tipoProducto.trim(),
       tipoDescripcion: tipoDescripcion.trim(),
       estado,
       fecha: new Date(fecha),
@@ -141,9 +141,9 @@ export const updateCategorias = async (ctx: any) => {
     console.log("Datos Recibidos:", body);
 
     // Desestructurar los datos
-    const { tipoProd, tipoDescripcion, estado, fecha_creacion } = body;
+    const { tipoProducto, tipoDescripcion, estado, fecha_creacion } = body;
 
-    if (tipoProd === undefined || tipoDescripcion === undefined || estado === undefined || fecha_creacion === undefined) {
+    if (tipoProducto === undefined || tipoDescripcion === undefined || estado === undefined || fecha_creacion === undefined) {
       response.status = 400;
       response.body = {
         success: false,
@@ -157,7 +157,7 @@ export const updateCategorias = async (ctx: any) => {
 
     // Llamar a actualizarCategoria con los parámetros correctos
     const result = await actualizarCategoria(parseInt(idCtga), {
-      tipoProd,
+      tipoProducto,
       tipoDescripcion,
       estado,
       fecha: fechaConvertida,
