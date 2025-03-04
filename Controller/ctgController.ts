@@ -141,9 +141,9 @@ export const updateCategorias = async (ctx: any) => {
     console.log("Datos Recibidos:", body);
 
     // Desestructurar los datos
-    const { tipoProd, tipoDescripcion, estado, fecha } = body;
+    const { tipoProd, tipoDescripcion, estado, fecha_creacion } = body;
 
-    if (tipoProd === undefined || tipoDescripcion === undefined || estado === undefined || fecha === undefined) {
+    if (tipoProd === undefined || tipoDescripcion === undefined || estado === undefined || fecha_creacion === undefined) {
       response.status = 400;
       response.body = {
         success: false,
@@ -153,7 +153,7 @@ export const updateCategorias = async (ctx: any) => {
     }
 
     // Convertir `fecha` a objeto Date si es un string
-    const fechaConvertida = new Date(fecha);
+    const fechaConvertida = new Date(fecha_creacion);
 
     // Llamar a actualizarCategoria con los parámetros correctos
     const result = await actualizarCategoria(parseInt(idCtga), {
