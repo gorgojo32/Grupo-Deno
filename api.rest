@@ -54,11 +54,11 @@ Content-Type: application/json
 }
 
 ### Actualizar una categoría por ID 
-PUT http://localhost:8000/categorias/6
+PUT http://localhost:8000/categorias/7
 Content-Type: application/json
 
 {
-  "tipoProducto": "Tipo X",
+  "tipoProducto": "Tipo Actualizado",
   "tipoDescripcion": "Cualquier otro",
   "estado": 1,
   "fecha": "2022-05-02T12:00:00Z"
