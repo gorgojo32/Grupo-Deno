@@ -1,9 +1,8 @@
 import { Application, oakCors } from "./Dependencies/dependencias.ts";
 import { routerProd } from "./Routes/prodRoutes.ts";
 import { routerCategoria } from "./Routes/ctgRoutes.ts";
-import { uploadMiddleware } from "./Middlewares/middIeImagenes.ts";
 
-// Middlewares
+
 import { errorHandler } from "./Middlewares/errorHandler.ts";
 import { logger } from "./Middlewares/logger.ts";
 import { fileUpload } from "./Middlewares/uploadFile.ts";
@@ -16,7 +15,7 @@ app.use(fileUpload);
 
 app.use(oakCors());
 
-app.use(uploadMiddleware);
+
 
 app.use(routerProd.routes());
 app.use(routerProd.allowedMethods());

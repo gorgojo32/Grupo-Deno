@@ -113,13 +113,24 @@ export const postProd = async (ctx: any) => {
 export const deleteProd = async (ctx: any) => {
   const { params, response } = ctx;
   try {
-    const result = await EliminarProducto(params.id);
+    const { id_producto } = params; 
+
+    if (!id_producto) {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "ID de usuario no proporcionado",
+      };
+      return;
+    }
+
+    const result = await EliminarProducto(params.id_producto);
 
     if (result.success) {
       response.status = 200;
       response.body = result;
     } else {
-      response.status = 400;
+      response.status = 404;
       response.body = result;
     }
     // deno-lint-ignore no-unused-vars

@@ -14,9 +14,5 @@ routerProd.post("/productos", postProd);
 routerProd.put("/productos/:id_producto", putProd);
 routerProd.delete("/productos/:id_producto", deleteProd);
 
-routerProd.delete("/productos/:id", deleteProd);
-routerProd.put("/productos/:id", putProd);
-
-
 export { routerProd };
 

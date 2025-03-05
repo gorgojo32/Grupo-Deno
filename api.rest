@@ -34,7 +34,11 @@ Content-Type: application/json
 }
 
 ### Eliminar un producto
-DELETE http://localhost:8000/productos/12
+
+DELETE http://localhost:8000/productos/48
+
+
+
 Content-Type: application/json
 
 ###  -----  CATEGORIAS  -----   ###
