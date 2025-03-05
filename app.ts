@@ -3,6 +3,7 @@ import { routerProd } from "./Routes/prodRoutes.ts";
 import { routerCategoria } from "./Routes/ctgRoutes.ts";
 
 
+
 import { errorHandler } from "./Middlewares/errorHandler.ts";
 import { logger } from "./Middlewares/logger.ts";
 import { logData } from "./Middlewares/logData.ts";
@@ -14,6 +15,8 @@ app.use(errorHandler);
 app.use(logger);
 app.use(fileUpload);
 app.use(logData);
+
+ 
 
 app.use(oakCors());
 
