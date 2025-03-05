@@ -37,7 +37,7 @@ export const postProd = async (ctx: any) => {
   const { request, response } = ctx;
 
   try {
-    // Verificar si la solicitud tiene contenido
+
     const contentLength = request.headers.get("Content-Length");
     if (!contentLength || contentLength === "0") {
       response.status = 400;
@@ -51,7 +51,7 @@ export const postProd = async (ctx: any) => {
     const body = await request.body.json();
     console.log("Datos Recibidos:", body);
 
-    // Validación de datos
+
     const {
       id_categoria,
       nombre,
@@ -87,7 +87,7 @@ export const postProd = async (ctx: any) => {
       return;
     }
 
-    // Formatear los datos antes de insertarlos
+
     const productoData = {
       id_categoria,
       nombre: nombre.trim(),
@@ -113,7 +113,7 @@ export const postProd = async (ctx: any) => {
 export const deleteProd = async (ctx: any) => {
   const { params, response } = ctx;
   try {
-    const { id_producto } = params; 
+    const { id_producto } = params;
 
     if (!id_producto) {
       response.status = 400;
@@ -198,7 +198,7 @@ export const putProd = async (ctx: any) => {
       stock < 0 ||
       (estado !== 0 && estado !== 1) ||
       !fecha_creacion || isNaN(Date.parse(fecha_creacion))
-     ) {
+    ) {
       response.status = 400;
       response.body = {
         success: false,
@@ -207,7 +207,7 @@ export const putProd = async (ctx: any) => {
       return;
     }
 
-    
+
     // if (id_categoria === undefined || nombre === undefined ||  descripcion === undefined  || 
     //   precio === undefined  || costo === undefined  ||  stock === undefined  || 
     //   estado === undefined || fecha_creacion === undefined) {
