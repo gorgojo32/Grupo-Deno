@@ -7,7 +7,7 @@ interface ctgData {
   tipoProducto: string;
   tipoDescripcion: string;
   estado: 0 | 1;
-  fecha: Date;
+  fecha_creacion: Date;
 }
 
 export const listarCategorias = async () => {
@@ -43,7 +43,7 @@ export const insertarCategoria = async (categoria: ctgData) => {
         categoria.tipoProducto,
         categoria.tipoDescripcion,
         categoria.estado,
-        categoria.fecha,
+        categoria.fecha_creacion,
       ],
     );
 
@@ -72,7 +72,7 @@ export const actualizarCategoria = async (
         ctgaData.tipoProducto,
         ctgaData.tipoDescripcion,
         ctgaData.estado,
-        ctgaData.fecha,
+        ctgaData.fecha_creacion,
         id_Categoria,
       ],
     );

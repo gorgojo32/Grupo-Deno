@@ -81,7 +81,7 @@ export const postCategorias = async (ctx: any) => {
       tipoProducto: tipoProducto.trim(),
       tipoDescripcion: tipoDescripcion.trim(),
       estado,
-      fecha: new Date(fecha),
+      fecha_creacion: new Date(fecha),
     };
 
     // Insertar la categoría en la base de datos
@@ -160,7 +160,7 @@ export const updateCategorias = async (ctx: any) => {
       tipoProducto,
       tipoDescripcion,
       estado,
-      fecha: fechaConvertida,
+      fecha_creacion: fechaConvertida,
     });
 
     if (result.success) {

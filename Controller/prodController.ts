@@ -1,5 +1,6 @@
 // deno-lint-ignore-file
 import { z } from "../Dependencies/dependencias.ts";
+import { Conexion } from "../Models/conexion.ts";
 import {
   actualizarProducto,
   EliminarProducto,
@@ -37,7 +38,6 @@ export const postProd = async (ctx: any) => {
   const { request, response } = ctx;
 
   try {
-
     const contentLength = request.headers.get("Content-Length");
     if (!contentLength || contentLength === "0") {
       response.status = 400;
@@ -51,7 +51,6 @@ export const postProd = async (ctx: any) => {
     const body = await request.body.json();
     console.log("Datos Recibidos:", body);
 
-
     const {
       id_categoria,
       nombre,
@@ -59,6 +58,7 @@ export const postProd = async (ctx: any) => {
       precio,
       costo,
       stock,
+      imagen,
       estado,
       fecha_creacion,
     } = body;
@@ -87,6 +87,9 @@ export const postProd = async (ctx: any) => {
       return;
     }
 
+    // Ahora validamos que imagen sea una cadena válida, pero permitimos que sea
+    // undefined o vacía cuando el producto no tiene imagen
+    const imagenPath = imagen && typeof imagen === "string" ? imagen.trim() : "";
 
     const productoData = {
       id_categoria,
@@ -94,6 +97,7 @@ export const postProd = async (ctx: any) => {
       descripcion: descripcion.trim(),
       precio,
       costo,
+      imagen: imagenPath,
       stock,
       estado,
       fecha: new Date(fecha_creacion),
@@ -110,39 +114,6 @@ export const postProd = async (ctx: any) => {
   }
 };
 
-export const deleteProd = async (ctx: any) => {
-  const { params, response } = ctx;
-  try {
-    const { id_producto } = params;
-
-    if (!id_producto) {
-      response.status = 400;
-      response.body = {
-        success: false,
-        msg: "ID de usuario no proporcionado",
-      };
-      return;
-    }
-
-    const result = await EliminarProducto(params.id_producto);
-
-    if (result.success) {
-      response.status = 200;
-      response.body = result;
-    } else {
-      response.status = 404;
-      response.body = result;
-    }
-    // deno-lint-ignore no-unused-vars
-  } catch (error) {
-    response.status = 500;
-    response.body = {
-      success: false,
-      msg: "Error interno del servidor",
-    };
-  }
-};
-
 export const putProd = async (ctx: any) => {
   const { request, response, params } = ctx;
   try {
@@ -152,7 +123,7 @@ export const putProd = async (ctx: any) => {
       response.status = 400;
       response.body = {
         success: false,
-        msg: "ID de categoría no proporcionado",
+        msg: "ID de producto no proporcionado",
       };
       return;
     }
@@ -179,6 +150,7 @@ export const putProd = async (ctx: any) => {
       precio,
       costo,
       stock,
+      imagen,
       estado,
       fecha_creacion,
     } = body;
@@ -207,21 +179,10 @@ export const putProd = async (ctx: any) => {
       return;
     }
 
-
-    // if (id_categoria === undefined || nombre === undefined ||  descripcion === undefined  || 
-    //   precio === undefined  || costo === undefined  ||  stock === undefined  || 
-    //   estado === undefined || fecha_creacion === undefined) {
-    //   response.status = 400;
-    //   response.body = {
-    //     success: false,
-    //     msg: "Todos los campos son obligatorios",
-    //   };
-    //   return;
-    // }
+    // Validación de imagen, permitiendo que sea undefined o vacía
+    const imagenPath = imagen && typeof imagen === "string" ? imagen.trim() : "";
 
     const fechaConvertida = new Date(fecha_creacion);
-
-    
     const result = await actualizarProducto(parseInt(id_producto), {
       id_categoria,
       nombre,
@@ -229,6 +190,7 @@ export const putProd = async (ctx: any) => {
       precio,
       costo,
       stock,
+      imagen: imagenPath,
       estado,
       fecha: fechaConvertida,
     });
@@ -237,23 +199,121 @@ export const putProd = async (ctx: any) => {
       response.status = 200;
       response.body = {
         success: true,
-        msg: "Categoría actualizada correctamente",
+        msg: "Producto actualizado correctamente",
       };
     } else {
       response.status = 400;
       response.body = {
         success: false,
-        msg: result.msg || "No se pudo actualizar la categoría",
+        msg: result.msg || "No se pudo actualizar el producto",
       };
     }
   } catch (error) {
-
-    console.error("Error en updateCategorias:", error);
+    console.error("Error en putProd:", error);
     response.status = 500;
     response.body = {
       success: false,
       msg: "Error interno del servidor",
     };
-
   }
 };
+
+export const updateProductImage = async (ctx: any) => {
+  const { request, response, params } = ctx;
+  
+  try {
+    const { id_producto } = params;
+    
+    if (!id_producto) {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "ID de producto no proporcionado",
+      };
+      return;
+    }
+    
+    // Verificar contenido de la solicitud
+    const contentLength = request.headers.get("Content-Length");
+    if (!contentLength || contentLength === "0") {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "Cuerpo de la solicitud vacío",
+      };
+      return;
+    }
+    
+    const body = await request.body.json();
+    const { imagen } = body;
+    
+    if (!imagen || typeof imagen !== "string" || imagen.trim() === "") {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "Ruta de imagen no válida",
+      };
+      return;
+    }
+    
+    // Actualizar solo el campo de imagen
+    const result = await Conexion.execute(
+      "UPDATE productos SET imagen = ? WHERE id_producto = ?",
+      [imagen.trim(), parseInt(id_producto)]
+    );
+    
+    if (result && result.affectedRows && result.affectedRows > 0) {
+      response.status = 200;
+      response.body = {
+        success: true,
+        msg: "Imagen del producto actualizada correctamente",
+      };
+    } else {
+      response.status = 404;
+      response.body = {
+        success: false,
+        msg: `No se encontró el producto con ID ${id_producto}`,
+      };
+    }
+  } catch (error) {
+    console.error("Error al actualizar imagen:", error);
+    response.status = 500;
+    response.body = {
+      success: false,
+      msg: "Error interno del servidor",
+    };
+  }
+};
+
+export const deleteProd = async (ctx: any) => {
+  const { params, response } = ctx;
+  try {
+    const { id_producto } = params;
+
+    if (!id_producto) {
+      response.status = 400;
+      response.body = {
+        success: false,
+        msg: "ID de producto no proporcionado",
+      };
+      return;
+    }
+
+    const result = await EliminarProducto(parseInt(id_producto));
+
+    if (result.success) {
+      response.status = 200;
+      response.body = result;
+    } else {
+      response.status = 404;
+      response.body = result;
+    }
+  } catch (error) {
+    response.status = 500;
+    response.body = {
+      success: false,
+      msg: "Error interno del servidor",
+    };
+  }
+};
+

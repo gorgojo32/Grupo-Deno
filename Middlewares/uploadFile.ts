@@ -1,123 +1,140 @@
-// Middlewares/fileUpload.ts
-import { Context } from "../Dependencies/dependencias.ts";
-import { ensureDirSync } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
-import { extname } from "https://deno.land/std@0.208.0/path/mod.ts";
-// Importación correcta de uuid
-import { v4 as uuidv4 } from "https://deno.land/std@0.208.0/uuid/mod.ts";
+// uploadFile.ts - Versión mejorada para Oak v17.1.4
+import { Context } from "https://deno.land/x/oak@v17.1.4/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.215.0/fs/ensure_dir.ts";
+import { join } from "https://deno.land/std@0.215.0/path/mod.ts";
 
-// Configuración específica para imágenes
-const UPLOAD_DIR = "./uploads/images";
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+// Tipo para Next
+type Next = () => Promise<unknown>;
 
-// Crear el directorio si no existe
-try {
-  ensureDirSync(UPLOAD_DIR);
-} catch (error) {
-  const err = error as Error;
-  console.error(`Error al crear el directorio de imágenes: ${err.message}`);
-}
-
-/**
- * Middleware para subir imágenes
- * Solo acepta archivos de imagen (.jpg, .jpeg, .png, .gif, .webp)
- * Finaliza la petición con una respuesta directa
- */
-export const fileUpload = async (ctx: Context, next: () => Promise<unknown>) => {
-  // Verificar si es una petición POST a la ruta /api/upload/image
-  const isImageUploadRoute = ctx.request.url.pathname === "/api/upload/image";
-  const isPostMethod = ctx.request.method === "POST";
-  
-  if (!(isImageUploadRoute && isPostMethod)) {
+export async function uploadImageMiddleware(ctx: Context, next: Next) {
+  // Solo procesar solicitudes POST
+  if (ctx.request.method !== "POST") {
     return await next();
-  }
-  
-  // Verificar si la petición tiene cuerpo
-  if (!ctx.request.hasBody) {
-    ctx.response.status = 400;
-    ctx.response.body = { 
-      success: false, 
-      message: "No se envió ningún archivo" 
-    };
-    return;
   }
 
   try {
-    // Forma correcta de acceder al body en Oak v17
-    const formData = await ctx.request.body({ type: "form-data" }).value;
-    const data = await formData.read({ maxSize: MAX_FILE_SIZE });
-    
-    // Verificar si hay archivos
-    if (!data.files || data.files.length === 0) {
+    // Asegurar que existe el directorio de uploads
+    const uploadDir = "./uploads";
+    await ensureDir(uploadDir);
+
+    // Verificar que la solicitud tiene un content-type válido
+    const contentType = ctx.request.headers.get("content-type");
+    if (!contentType || !contentType.includes("multipart/form-data")) {
       ctx.response.status = 400;
       ctx.response.body = { 
-        success: false, 
-        message: "No se encontraron archivos de imagen" 
+        error: "Content-Type debe ser multipart/form-data", 
+        contentTypeRecibido: contentType 
       };
       return;
     }
 
-    const uploadedFiles = [];
-
-    // Procesar cada archivo
-    for (const file of data.files) {
-      if (!file.filename || !file.content) {
-        continue;
+    // Intentar obtener formData con manejo de errores
+    let formData;
+    try {
+      formData = await ctx.request.body.formData();
+    } catch (formError) {
+      console.error("Error al procesar formData:", formError);
+      ctx.response.status = 400;
+      ctx.response.body = { 
+        error: "Error al procesar el formData", 
+        details: formError instanceof Error ? formError.message : String(formError)
+      };
+      return;
+    }
+    
+    console.log("FormData procesado correctamente");
+    
+    // Buscar el archivo en el formData - soportando 'file' o cualquier otro nombre de campo
+    let file: File | null = null;
+    
+    // Primero buscar un campo llamado 'file'
+    file = formData.get("file") as File;
+    
+    // Si no hay campo 'file', buscar el primer File en el formData
+    if (!file || !(file instanceof File)) {
+      for (const [_, value] of formData.entries()) {
+        if (value instanceof File) {
+          file = value;
+          break;
+        }
       }
-
-      // Validar extensión
-      const extension = extname(file.filename).toLowerCase();
-      if (!ALLOWED_EXTENSIONS.includes(extension)) {
-        ctx.response.status = 400;
-        ctx.response.body = { 
-          success: false, 
-          message: `Tipo de archivo no permitido: ${extension}. Solo se permiten: ${ALLOWED_EXTENSIONS.join(", ")}` 
-        };
-        return;
-      }
-
-      // Generar nombre único - usando uuidv4() directamente
-      const uniqueFileName = `${uuidv4()}${extension}`;
-      const filePath = `${UPLOAD_DIR}/${uniqueFileName}`;
-      
-      // Guardar archivo
-      await Deno.writeFile(filePath, file.content);
-      
-      // Añadir a la lista de archivos subidos
-      uploadedFiles.push({
-        originalName: file.filename,
-        fileName: uniqueFileName,
-        path: filePath,
-        size: file.content.length,
-      });
+    }
+    
+    // Verificar si se encontró algún archivo
+    if (!file || !(file instanceof File)) {
+      ctx.response.status = 400;
+      ctx.response.body = { 
+        error: "No se encontró ningún archivo válido",
+        campos: Array.from(formData.keys())
+      };
+      return;
     }
 
-    // Responder con éxito
-    ctx.response.status = 200;
-    ctx.response.body = { 
-      success: true, 
-      message: "Imágenes subidas correctamente", 
-      files: uploadedFiles 
-    };
-    
-  } catch (error) {
-    // Manejar errores con tipado correcto
-    const err = error as Error;
-    
-    // Manejar errores específicos
-    if (err.name === "PayloadTooLargeError") {
-      ctx.response.status = 413;
-      ctx.response.body = { 
-        success: false, 
-        message: `El archivo es demasiado grande. El tamaño máximo permitido es ${MAX_FILE_SIZE / (1024 * 1024)}MB` 
-      };
-    } else {
-      console.error(`Error al procesar la subida de imágenes: ${err.message}`);
+    console.log(`Archivo encontrado: ${file.name}, tipo: ${file.type}`);
+
+    // Leer el contenido del archivo
+    let fileContent;
+    try {
+      fileContent = new Uint8Array(await file.arrayBuffer());
+    } catch (readError) {
+      console.error("Error al leer el contenido del archivo:", readError);
       ctx.response.status = 500;
       ctx.response.body = { 
-        success: false, 
-        message: "Error interno al procesar la subida de imágenes" 
+        error: "Error al leer el contenido del archivo", 
+        details: readError instanceof Error ? readError.message : String(readError)
+      };
+      return;
+    }
+    
+    // Generar un nombre de archivo único para evitar colisiones
+    const timestamp = new Date().getTime();
+    const fileName = `${timestamp}_${file.name}`;
+    const filePath = join(uploadDir, fileName);
+    
+    // Guardar archivo en disco
+    try {
+      await Deno.writeFile(filePath, fileContent);
+      console.log(`Archivo guardado en: ${filePath}`);
+    } catch (writeError) {
+      console.error("Error al guardar el archivo:", writeError);
+      ctx.response.status = 500;
+      ctx.response.body = { 
+        error: "Error al guardar el archivo en el servidor", 
+        details: writeError instanceof Error ? writeError.message : String(writeError)
+      };
+      return;
+    }
+
+    // Responder con información del archivo
+    ctx.response.status = 200;
+    ctx.response.body = {
+      success: true,
+      file: {
+        filename: fileName,
+        originalName: file.name,
+        path: `/uploads/${fileName}`, // Ruta relativa para el cliente
+        type: file.type,
+        size: fileContent.length
+      }
+    };
+
+  } catch (err) {
+    console.error("Error general al subir imagen:", err);
+    ctx.response.status = 500;
+    
+    if (err instanceof Error) {
+      ctx.response.body = { 
+        error: "Error al procesar la subida de imagen", 
+        details: err.message,
+        stack: err.stack
+      };
+    } else {
+      ctx.response.body = { 
+        error: "Error al procesar la subida de imagen",
+        details: String(err)
       };
     }
   }
-};
+  
+  // No llamamos a next() porque ya enviamos una respuesta
+}
