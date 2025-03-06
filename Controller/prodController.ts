@@ -183,8 +183,6 @@ export const putProd = async (ctx: any) => {
     const imagenPath = imagen && typeof imagen === "string" ? imagen.trim() : "";
 
     const fechaConvertida = new Date(fecha_creacion);
-
-    // Llamar a actualizar producto con los parámetros correctos
     const result = await actualizarProducto(parseInt(id_producto), {
       id_categoria,
       nombre,
