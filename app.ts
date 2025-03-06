@@ -6,6 +6,7 @@ import { routerCategoria } from "./Routes/ctgRoutes.ts";
 
 import { errorHandler } from "./Middlewares/errorHandler.ts";
 import { logger } from "./Middlewares/logger.ts";
+import { logData } from "./Middlewares/logData.ts";
 import { fileUpload } from "./Middlewares/uploadFile.ts";
 
 const app = new Application();
@@ -13,12 +14,11 @@ const app = new Application();
 app.use(errorHandler);
 app.use(logger);
 app.use(fileUpload);
+app.use(logData);
 
  
 
 app.use(oakCors());
-
-
 
 app.use(routerProd.routes());
 app.use(routerProd.allowedMethods());
