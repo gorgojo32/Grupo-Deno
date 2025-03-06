@@ -221,7 +221,7 @@ export const putProd = async (ctx: any) => {
 
     const fechaConvertida = new Date(fecha_creacion);
 
-    // Llamar a actualizarCategoria con los parámetros correctos
+    
     const result = await actualizarProducto(parseInt(id_producto), {
       id_categoria,
       nombre,
