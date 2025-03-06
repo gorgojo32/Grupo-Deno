@@ -319,37 +319,3 @@ export const deleteProd = async (ctx: any) => {
   }
 };
 
-export async function deleteImageMiddleware(ctx: Context, next: Next) {
-  if (ctx.request.method !== "DELETE") {
-    return await next();
-  }
-
-  try {
-    const imagePath = ctx.params.imagePath;
-    if (!imagePath) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "Ruta de imagen no proporcionada" };
-      return;
-    }
-
-    const fullPath = join(".", imagePath);
-    
-    try {
-      await Deno.stat(fullPath); // Verificar si el archivo existe
-      await Deno.remove(fullPath); // Eliminar el archivo
-      
-      ctx.response.status = 200;
-      ctx.response.body = { 
-        success: true, 
-        message: "Imagen eliminada correctamente" 
-      };
-    } catch (fileError) {
-      ctx.response.status = 404;
-      ctx.response.body = { error: "Imagen no encontrada" };
-    }
-  } catch (err) {
-    ctx.response.status = 500;
-    ctx.response.body = { error: "Error al eliminar la imagen" };
-  }
-}
-
