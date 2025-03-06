@@ -114,3 +114,15 @@ export const eliminarCategoria = async (idCtga: number) => {
     };
   }
 };
+export const listarComboCategorias = async () => {
+  try {
+      const {rows: categorias} = await Conexion.execute('SELECT id_categoria, nombre FROM categorias');
+      return {
+          success: true,
+          data: categorias,
+      };
+  } catch (error) {
+      console.error("Error en listarCategorias:", error);
+      return {success: false, msg: "Error en el servidor"};
+  }
+};
