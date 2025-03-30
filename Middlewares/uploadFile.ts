@@ -13,11 +13,11 @@ export async function uploadImageMiddleware(ctx: Context, next: Next) {
   }
 
   try {
-    // Asegurar que existe el directorio de uploads
+   
     const uploadDir = "./uploads";
     await ensureDir(uploadDir);
 
-    // Verificar que la solicitud tiene un content-type válido
+    
     const contentType = ctx.request.headers.get("content-type");
     if (!contentType || !contentType.includes("multipart/form-data")) {
       ctx.response.status = 400;
@@ -28,7 +28,7 @@ export async function uploadImageMiddleware(ctx: Context, next: Next) {
       return;
     }
 
-    // Intentar obtener formData con manejo de errores
+    
     let formData;
     try {
       formData = await ctx.request.body.formData();
