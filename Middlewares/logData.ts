@@ -1,5 +1,8 @@
 import { Context } from "../Dependencies/dependencias.ts";
 
+
+
+//Julian gay
 export const logData = async (ctx: Context, next: () => Promise<unknown>) => {
   console.log("Nueva solicitud recibida:");
   console.log(`Método: ${ctx.request.method}`);
