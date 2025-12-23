@@ -35,7 +35,7 @@ export const Conexion = await new Client().connect({
 Run the server with:
 
 ```bash
-deno run --allow-net --allow-read --allow-write --allow-env app.ts
+deno run --allow-net --allow-read --allow-write --allow-env --allow-import  --watch app.ts
 ```
 
 The server will start on `http://localhost:8000`
@@ -90,4 +90,4 @@ backend/
 └── Utilities/
     └── imageUrls.ts          # Image utilities
 ```
-deno run --allow-net --allow-read --allow-write --allow-env --allow-import  --watch app.ts
+
