@@ -68,6 +68,7 @@ The server will start on `http://localhost:8000`
 
 ```
 backend/
+├── api.rest
 ├── app.ts                    # Main application entry point
 ├── Dependencies/
 │   └── dependencias.ts       # Centralized dependencies
